@@ -63,6 +63,26 @@ async def link_generator(client: Client, message: Message):
 
 
 
+@Bot.on_message(filters.private & filters.command("clink"))
+async def custom_link_command(client, message):
+    try:
+        # Command ke baad ka data lo
+        data = message.text.split(" ", 1)[1]
+        thumb_url, caption, btn_text, btn_url = [i.strip() for i in data.split("|")]
+
+        await message.reply_photo(
+            photo=thumb_url,
+            caption=f"<b>{caption}</b>",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(btn_text, url=btn_url)]]
+            )
+        )
+
+    except Exception as e:
+        await message.reply_text(
+            "❌ Format error!\n\nUse like:\n<code>/clink thumbnail_url | Caption | Button Text | Button Link</code>"
+        )
+        
 
 
 
